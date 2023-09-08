@@ -6,8 +6,8 @@ import com.SpringBootBlogApi.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+
 
 
 @RequestMapping("/posts")
@@ -29,8 +29,8 @@ public class PostController {
     public Page<PostResponse> getAllPostWithPage(
             @RequestParam(value = "page",defaultValue = "0") int page,
             @RequestParam(value = "size",defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "desc")String sort,
-            @RequestParam(value = "type")String type
+            @RequestParam(value = "sort", defaultValue = "title")String sort,
+            @RequestParam(value = "type", defaultValue = "desc")String type
     ){
         return postService.getAllPost(page,size,sort,type);
     }
@@ -40,6 +40,20 @@ public class PostController {
     public ResponseMessage<PostResponse> getPostById(@PathVariable Long postId ){
 
         return postService.getPostById(postId);
+    }
+
+    @PutMapping("/updatePostById/{postId}")
+    public ResponseMessage<PostResponse> updatePost(@RequestBody PostRequest postRequest,
+                                                    @PathVariable Long postId){
+        return  postService.update(postRequest,postId);
+
+    }
+
+    @DeleteMapping("/deletePostById/{postId}")
+    public ResponseMessage<?> deletePostById(@PathVariable Long postId){
+
+        return postService.deletePostById(postId);
+
     }
 
 

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Data
@@ -24,5 +25,8 @@ public class Post {
     private String message;
     @Column(name = "contents",nullable = false)
     private String contents;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private Set<Comment> comments;
 
 }

@@ -13,10 +13,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class PostRequest implements Serializable {
+public class PostRequest  {
 
     @NotNull
-
     private Long id;
     @NotNull
     @Size(min = 4,max = 30, message = "Your title must be between 4 and 30")

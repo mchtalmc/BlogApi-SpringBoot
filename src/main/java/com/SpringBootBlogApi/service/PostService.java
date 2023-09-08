@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +75,31 @@ public class PostService {
     private Post isPostExist(Long postId){
         return postRepository.findById(postId).orElseThrow(()->
                 new ResourceNotFoundException(String.format(ErrorMessage.POST_ID_ALREADY_EXISTS, postId)));
+    }
+
+    public ResponseMessage<PostResponse> update(PostRequest postRequest, Long postId) {
+
+        Post post=isPostExist(postId);
+        Post updatePost=mapPostRequestToPost(postRequest);
+        Post savedPost=postRepository.save(updatePost);
+
+        return ResponseMessage.<PostResponse>builder()
+                .message(SuccesMessage.POST_UPDATE)
+                .httpStatus(HttpStatus.OK)
+                .object(mapPostToPostResponse(savedPost))
+                .build();
+    }
+
+    public ResponseMessage<?> deletePostById(Long postId) {
+       Optional<Post> post= postRepository.findById(postId);
+       if (post.isEmpty()){
+           throw  new ResourceNotFoundException(String.format(ErrorMessage.NOT_FOUND_POST,postId));
+       }
+       postRepository.deleteById(postId);
+       return ResponseMessage.builder()
+               .message(SuccesMessage.POST_DELETE)
+               .httpStatus(HttpStatus.OK)
+               .build();
     }
 }
 
