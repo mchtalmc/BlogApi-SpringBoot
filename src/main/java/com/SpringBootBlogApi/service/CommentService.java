@@ -92,4 +92,35 @@ public class CommentService {
         Pageable pageable=PageRequest.of(page,size);
         return commentRepository.findAll(pageable).map(this::mapToCommentToCommentResponse);
     }
+
+    public ResponseMessage<CommentResponse> updateCommentById(Long postId, Long commentsId, CommentRequest commentRequest) {
+
+        if (!isPostExist(postId)){
+            throw new ResourceNotFoundException(String.format(ErrorMessage.NOT_FOUND_POST,postId));
+        }
+        if (!isCommentExist(commentsId)){
+            throw new ResourceNotFoundException(String.format(ErrorMessage.NOT_FOUND_COMMENT,commentsId));
+        }
+        Comment comment=mapToCommentRespontToComment(commentRequest);
+        Comment savedComment=commentRepository.save(comment);
+        return ResponseMessage.<CommentResponse>builder()
+                .message(SuccesMessage.UPDATE_COMMENT)
+                .httpStatus(HttpStatus.OK)
+                .object(mapToCommentToCommentResponse(savedComment))
+                .build();
+    }
+
+    public ResponseMessage<?> deleteCommentById(Long postId, Long commentsId) {
+        if (!isPostExist(postId)){
+            throw new ResourceNotFoundException(String.format(ErrorMessage.NOT_FOUND_POST,postId));
+        }
+        if (!isCommentExist(commentsId)){
+            throw new ResourceNotFoundException(String.format(ErrorMessage.NOT_FOUND_COMMENT,commentsId));
+        }
+        commentRepository.deleteById(commentsId);
+        return ResponseMessage.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(SuccesMessage.DELETE_COMMENT)
+                .build();
+    }
 }

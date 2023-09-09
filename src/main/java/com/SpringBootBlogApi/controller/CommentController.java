@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -19,7 +20,7 @@ public class CommentController {
 
 
     @PostMapping("/posts/{postId}/comments")
-    public ResponseMessage<CommentResponse> createComment(@RequestBody CommentRequest commentRequest,
+    public ResponseMessage<CommentResponse> createComment(@Valid @RequestBody CommentRequest commentRequest,
                                                              @PathVariable(value = "postId") Long postId){
         return commentService.save(commentRequest,postId);
 
@@ -46,7 +47,23 @@ public class CommentController {
         return commentService.findAll(page,size, postId,commentsId);
     }
 
+    @PutMapping("/posts/{postId}/comments/{commentsId}")
+    public ResponseMessage<CommentResponse> updateCommentById(
+            @Valid
+            @PathVariable(value = "postId") Long postId,
+            @PathVariable(value = "commentsId") Long commentsId,
+            @RequestBody CommentRequest commentRequest
+    ){
+        return commentService.updateCommentById(postId,commentsId,commentRequest);
+    }
 
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseMessage<?> deleteComment (
+                                 @PathVariable(value = "postId") Long postId,
+                                 @PathVariable(value = "commentsId")Long commentId){
+        return commentService.deleteCommentById(postId,commentId);
+
+    }
 
 
 
