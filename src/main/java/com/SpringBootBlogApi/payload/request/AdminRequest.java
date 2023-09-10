@@ -1,5 +1,6 @@
 package com.SpringBootBlogApi.payload.request;
 
+import com.SpringBootBlogApi.entity.enums.Gender;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,9 @@ public class AdminRequest {
     @Email
     @NotNull
     private String email;
+
+    @NotNull
+    private Gender gender;
 
 
 }

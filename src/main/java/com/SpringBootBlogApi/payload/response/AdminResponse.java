@@ -1,5 +1,6 @@
 package com.SpringBootBlogApi.payload.response;
 
+import com.SpringBootBlogApi.entity.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,4 +20,5 @@ public class AdminResponse {
     private String name;
     private String password;
     private String email;
+    private Gender gender;
 }

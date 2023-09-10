@@ -1,5 +1,6 @@
 package com.SpringBootBlogApi.entity;
 
+import com.SpringBootBlogApi.entity.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,5 +35,9 @@ public class Admin {
     @OneToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UserRole userRole;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
 
 }

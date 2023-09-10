@@ -1,16 +1,15 @@
 package com.SpringBootBlogApi.security.service;
-
-import com.SpringBootBlogApi.entity.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -19,15 +18,16 @@ public class UserDetailsImpl implements UserDetails {
     private Long id;
     private String username;
     private String name;
+    @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String name, String password, Gender gender, String role, String named) {
+    public UserDetailsImpl(Long id, String username, String name, String password, String role) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.password = password;
-        List<GrantedAuthority> grantedAuthorities=new ArrayList<>();
+        List<GrantedAuthority> grantedAuthorities= new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(role));
         this.authorities=grantedAuthorities;
     }
@@ -65,5 +65,15 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    public boolean equals(Object o){
+        if (this==o){
+            return true;
+        }
+        if (o==null || getClass()!= o.getClass()){
+            return false;
+        }
+        UserDetailsImpl user= (UserDetailsImpl) o;
+        return Objects.equals(id,user.getId());
     }
 }

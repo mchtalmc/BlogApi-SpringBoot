@@ -46,6 +46,7 @@ public class AdminService {
                 .username(adminRequest.getUsername())
                 .name(adminRequest.getName())
                 .password(adminRequest.getPassword())
+               .gender(adminRequest.getGender())
                 .build();
 
     }
@@ -56,6 +57,7 @@ public class AdminService {
                 .email(admin.getEmail())
                 .username(admin.getUsername())
                 .name(admin.getName())
+                .gender(admin.getGender())
                 .build();
     }
 
