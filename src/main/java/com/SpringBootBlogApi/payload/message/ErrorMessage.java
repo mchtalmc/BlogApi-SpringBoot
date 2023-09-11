@@ -19,4 +19,6 @@ public class ErrorMessage {
 
     public static final String ALREADY_ROLE = "Error: This named UserRole exists ";
 
+    public static final String NOT_FOUND_ROLE = "Error: No role with this name  ";
+
 }

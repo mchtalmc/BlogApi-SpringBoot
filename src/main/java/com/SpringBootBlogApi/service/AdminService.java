@@ -78,4 +78,8 @@ public class AdminService {
         adminRepository.deleteById(id);
         return SuccesMessage.DELETE_ADMIN;
     }
+
+    public long countAllAdmins() {
+        return adminRepository.count();
+    }
 }

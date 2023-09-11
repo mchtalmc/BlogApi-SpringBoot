@@ -22,7 +22,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin admin=adminRepository.findByUserNameEquals(username);
+        Admin admin=adminRepository.findByUsernameEquals(username);
         Blogger blogger=bloggerRepository.findByUsernameEquals(username);
         if (blogger!=null){
             return new UserDetailsImpl(
