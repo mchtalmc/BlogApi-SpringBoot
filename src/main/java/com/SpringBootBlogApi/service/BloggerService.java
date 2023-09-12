@@ -1,6 +1,7 @@
 package com.SpringBootBlogApi.service;
 
 import com.SpringBootBlogApi.entity.Blogger;
+import com.SpringBootBlogApi.entity.enums.RoleType;
 import com.SpringBootBlogApi.exception.ResourceNotFoundException;
 import com.SpringBootBlogApi.payload.message.ErrorMessage;
 import com.SpringBootBlogApi.payload.message.SuccesMessage;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,12 +27,18 @@ import static org.springframework.data.domain.Sort.Direction.valueOf;
 public class BloggerService {
     private final BloggerRepository bloggerRepository;
     private final UniquePropertyValidator uniquePropertyValidator;
+    private final UserRoleService userRoleService;
+    private final PasswordEncoder passwordEncoder;
 
 
     public ResponseMessage<BloggerResponse> save(BloggerRequest bloggerRequest) {
-        uniquePropertyValidator.checkDuplicate(bloggerRequest.getUsername());
+        uniquePropertyValidator.checkDuplicate(bloggerRequest.getUsername(),bloggerRequest.getEmail());
 
         Blogger blogger=mapBloggerRequestToBlogger(bloggerRequest);
+
+        blogger.setUserRole(userRoleService.getUserRole(RoleType.BLOGGER));
+        blogger.setPassword(passwordEncoder.encode(blogger.getPassword()));
+
         Blogger savedBlogger=bloggerRepository.save(blogger);
         return ResponseMessage.<BloggerResponse>builder()
                 .httpStatus(HttpStatus.CREATED)

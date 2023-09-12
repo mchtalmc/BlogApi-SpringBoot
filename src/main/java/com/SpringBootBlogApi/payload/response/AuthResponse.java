@@ -1,6 +1,6 @@
 package com.SpringBootBlogApi.payload.response;
 
-import com.SpringBootBlogApi.entity.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,13 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class BloggerResponse {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class AuthResponse {
 
-    private Long userId;
     private String username;
+    private String role;
+    private String token;
     private String name;
-    private String email;
-    private String surname;
-    private String password;
-    private Gender gender;
 }

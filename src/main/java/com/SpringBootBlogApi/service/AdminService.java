@@ -1,6 +1,8 @@
 package com.SpringBootBlogApi.service;
 
 import com.SpringBootBlogApi.entity.Admin;
+import com.SpringBootBlogApi.entity.enums.RoleType;
+import com.SpringBootBlogApi.exception.ConflictException;
 import com.SpringBootBlogApi.exception.ResourceNotFoundException;
 import com.SpringBootBlogApi.payload.message.ErrorMessage;
 import com.SpringBootBlogApi.payload.message.SuccesMessage;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -25,11 +28,22 @@ import java.util.Optional;
 public class AdminService {
     private final AdminRepository adminRepository;
     private final UniquePropertyValidator uniquePropertyValidator;
+    private final UserRoleService userRoleService;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseMessage<AdminResponse> saveAdmin(AdminRequest adminRequest) {
-        uniquePropertyValidator.checkDuplicate(adminRequest.getUsername());
+        uniquePropertyValidator.checkDuplicate(adminRequest.getUsername(),adminRequest.getEmail());
 
         Admin admin=mapToAdminRequestToAdmin(adminRequest);
+        admin.setBuilt_in(false);
+        if (Objects.equals(adminRequest.getUsername(),"mchtalmc")){
+            admin.setBuilt_in(true);
+        }
+        admin.setUserRole(userRoleService.getUserRole(RoleType.ADMIN));
+
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        System.out.println(admin.getPassword());
+
         Admin saveAdmin=adminRepository.save(admin);
         return ResponseMessage.<AdminResponse>builder()
                 .httpStatus(HttpStatus.CREATED)
@@ -74,6 +88,8 @@ public class AdminService {
         Optional<Admin> admin = adminRepository.findById(id);
         if(admin.isEmpty()) {
             throw new ResourceNotFoundException(String.format(ErrorMessage.NOT_FOUND_ADMIN,id));
+        }else if (admin.get().isBuilt_in()) {
+            throw new ConflictException(ErrorMessage.NOT_PERMITTED_METHOD_MESSAGE);
         }
         adminRepository.deleteById(id);
         return SuccesMessage.DELETE_ADMIN;

@@ -16,16 +16,16 @@ import java.util.Set;
 @Builder(toBuilder = true)
 public class PostRequest  {
 
-    @NotNull
+    @NotNull(message = "The id cannot be empty")
     private Long id;
-    @NotNull
+    @NotNull(message = "The title cannot be empty")
     @Size(min = 4,max = 30, message = "Your title must be between 4 and 30")
     private String title;
 
-    @NotNull
+    @NotNull(message = "The message cannot be empty")
     @Size(min = 10,max = 250, message = "Your title must be between 10 and 250")
     private String message;
-    @NotNull
+    @NotNull(message = "The contents cannot be empty")
     @Size(min = 5,max = 50, message = "Your title must be between 5 and 50")
     private String contents;
 

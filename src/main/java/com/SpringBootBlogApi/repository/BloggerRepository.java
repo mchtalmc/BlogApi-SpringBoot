@@ -8,4 +8,6 @@ public interface BloggerRepository extends JpaRepository<Blogger,Long> {
 
 
     Blogger findByUsernameEquals(String username);
+
+    boolean existsByEmail(String email);
 }

@@ -83,12 +83,16 @@ public class WebSecurityConfing {
         };
     }
     private static final String[] AUTH_WHITE_LIST={
-      "/",
-      "index.html",
-      "/images/**",
+            "/",
+            "swagger-ui.html",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "index.html",
+            "/images/**",
             "/css/**",
             "/js/**",
-
+            "/auth/login"
     };
-
 }
+
+

@@ -6,6 +6,8 @@ import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -24,6 +26,10 @@ public class Blogger  {
     private String name;
 
     private String surname;
+
+    @Email
+    @NotNull(message = "The email cannot be empty")
+    private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password; // hassas veri oldugu icin okuma islemlerinde kullanilmasin

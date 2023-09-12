@@ -34,9 +34,11 @@ public class SpringBootBlogApiApplication  implements CommandLineRunner {
 			AdminRequest adminRequest = new AdminRequest();
 		adminRequest.setName("Mucahit");
 		adminRequest.setUsername("mchtalmc");
+		adminRequest.setPassword("12345678");
 		adminRequest.setEmail("mcht.almc@gmail.com");
 		adminRequest.setGender(Gender.MALE);
-		adminRequest.setPassword("12345678");
+		adminService.saveAdmin(adminRequest);
+
 		}
 
 	}

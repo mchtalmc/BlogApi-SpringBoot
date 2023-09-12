@@ -24,5 +24,7 @@ public class SuccesMessage {
     public static final String FIND_BLOGGER_BY_ID = "Blogger with this %s was found";
     public static final String DELETE_BLOGGER_BY_ID = "Blogger is Deleted Successfully";
 
+    public static final String CATEGORY_CREATED = "Successfully created category";
+
 
 }

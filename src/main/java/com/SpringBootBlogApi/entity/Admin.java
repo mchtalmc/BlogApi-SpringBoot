@@ -39,5 +39,7 @@ public class Admin {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    private boolean built_in;
+
 
 }
