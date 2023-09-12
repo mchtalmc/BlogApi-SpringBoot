@@ -51,11 +51,15 @@ public class CategoryService {
 
 
     public ResponseMessage<CategoryResponse> findCategoryByName(Long categoryId) {
-        if (!categoryRepository.existsById(categoryId)){
-            throw new ResourceNotFoundException(String.format(ErrorMessage.NOT_FOUND_CATEGORY,categoryId));
-        }
 
+       Category category= categoryRepository.findById(categoryId)
+               .orElseThrow(() -> new ResourceNotFoundException(String.format(ErrorMessage.NOT_FOUND_CATEGORY,categoryId)));
 
-
+      CategoryResponse mapCategory= mapToCategoryToCategoryResponse(category);
+       return ResponseMessage.<CategoryResponse>builder()
+               .object(mapCategory)
+               .httpStatus(HttpStatus.OK)
+               .build();
     }
+
 }

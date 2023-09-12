@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -65,15 +64,5 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-    public boolean equals(Object o){
-        if (this==o){
-            return true;
-        }
-        if (o==null || getClass()!= o.getClass()){
-            return false;
-        }
-        UserDetailsImpl user= (UserDetailsImpl) o;
-        return Objects.equals(id,user.getId());
     }
 }

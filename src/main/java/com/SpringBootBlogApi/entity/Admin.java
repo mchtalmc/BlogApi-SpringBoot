@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "admin")
 @SuperBuilder
 
 public class Admin {

@@ -1,5 +1,4 @@
 package com.SpringBootBlogApi.security.confing;
-
 import com.SpringBootBlogApi.security.jwt.AuthEntryPointJwt;
 import com.SpringBootBlogApi.security.jwt.AuthTokenFilter;
 import com.SpringBootBlogApi.security.service.UserDetailServiceImpl;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,11 +23,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-public class WebSecurityConfing {
-    private final UserDetailServiceImpl userDetailService;
+public class WebSecurityConfig {
+
+    private final UserDetailServiceImpl userDetailsService;
     private final AuthEntryPointJwt unauthorizedHandler;
-
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -48,41 +45,46 @@ public class WebSecurityConfing {
 
         http.headers().frameOptions().sameOrigin();
         http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(authTokenJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-
-
     @Bean
-    public AuthTokenFilter authTokenJwtTokenFilter(){
-        return new AuthTokenFilter();
+    public AuthTokenFilter authenticationJwtTokenFilter(){
+        return  new AuthTokenFilter();
     }
 
+    @Bean
     public DaoAuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authenticationProvider= new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailService);
+
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public WebMvcConfigurer corsConfigurer(){
+
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
+
+                registry.addMapping("/**") // tum URL ler kapsanmis oluyor
                         .allowedOrigins("*")
                         .allowedHeaders("*")
                         .allowedMethods("*");
             }
         };
     }
-    private static final String[] AUTH_WHITE_LIST={
+
+    private static final String[] AUTH_WHITE_LIST = {
             "/",
             "swagger-ui.html",
             "/swagger-ui/**",
@@ -94,5 +96,4 @@ public class WebSecurityConfing {
             "/auth/login"
     };
 }
-
 

@@ -24,6 +24,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Admin admin=adminRepository.findByUsernameEquals(username);
         Blogger blogger=bloggerRepository.findByUsernameEquals(username);
+
         if (blogger!=null){
             return new UserDetailsImpl(
                     blogger.getId(),

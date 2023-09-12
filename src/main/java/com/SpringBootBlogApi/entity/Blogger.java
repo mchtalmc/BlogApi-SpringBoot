@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "blogger")
 @Builder(toBuilder = true)
 public class Blogger  {
     @Id
