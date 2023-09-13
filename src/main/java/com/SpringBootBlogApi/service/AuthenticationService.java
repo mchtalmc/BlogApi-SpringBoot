@@ -28,7 +28,7 @@ public class AuthenticationService {
 
        Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token= "Bearer" + jwtUtils.generateJwtToken(authentication);
+        String token= "Bearer " + jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails= (UserDetailsImpl) authentication.getPrincipal();
         Set<String> roles=userDetails.getAuthorities()
                 .stream()
