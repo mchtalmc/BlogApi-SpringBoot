@@ -10,6 +10,9 @@ import com.SpringBootBlogApi.payload.response.CategoryResponse;
 import com.SpringBootBlogApi.payload.response.ResponseMessage;
 import com.SpringBootBlogApi.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+
 
     public ResponseMessage<CategoryResponse> save(CategoryRequest categoryRequest) {
 
@@ -50,7 +54,7 @@ public class CategoryService {
     }
 
 
-    public ResponseMessage<CategoryResponse> findCategoryByName(Long categoryId) {
+    public ResponseMessage<CategoryResponse> findCategoryById(Long categoryId) {
 
        Category category= categoryRepository.findById(categoryId)
                .orElseThrow(() -> new ResourceNotFoundException(String.format(ErrorMessage.NOT_FOUND_CATEGORY,categoryId)));
@@ -62,4 +66,15 @@ public class CategoryService {
                .build();
     }
 
+    public Page<CategoryResponse> getAllCategory(int page, int size) {
+        Pageable pageable=PageRequest.of(page,size);
+        return categoryRepository.findAll(pageable).map(this::mapToCategoryToCategoryResponse);
+    }
+
+    public ResponseMessage<CategoryResponse> updateCategory(Long categoryId, CategoryRequest categoryRequest) {
+        categoryRepository.findById(categoryId).orElseThrow(()->
+                new ResourceNotFoundException(ErrorMessage.NOT_FOUND_CATEGORY));
+
+
+    }
 }
