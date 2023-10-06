@@ -75,6 +75,7 @@ public class CategoryService {
         categoryRepository.findById(categoryId).orElseThrow(()->
                 new ResourceNotFoundException(ErrorMessage.NOT_FOUND_CATEGORY));
 
+        return
 
     }
 }
